@@ -1,25 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CAP College PDF Filter</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f2f2f2; padding: 40px; }
-        form { background: #fff; padding: 25px; border-radius: 8px; max-width: 600px; margin: auto; }
-        select, button { width: 100%; padding: 10px; margin-top: 10px; font-size: 15px; }
-        h2 { text-align: center; }
-        label { margin-top: 15px; display: block; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8">
+  <title>CAP Filter Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f2f2f2;
+    }
+
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1f618d;
+    }
+
+    .multi-select {
+      height: 150px;
+    }
+
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
-  <div id="loading" style="display:none; text-align:center;">
+
+  <h2>📄 MHT-CET CAP Filter Tool</h2>
+
+  <form method="POST">
+    <label for="city">Select City:</label>
+    <select name="city" required>
+      {% for city in cities %}
+        <option value="{{ city }}">{{ city }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="branches">Select Engineering Branches:</label>
+    <select name="branches" multiple class="multi-select" required>
+      {% for branch in branches %}
+        <option value="{{ branch }}">{{ branch }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Generate Filtered PDF</button>
+  </form>
+
+  <div id="loading">
     <h3>⏳ Generating your filtered PDF...</h3>
     <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." style="width: 80px;">
   </div>
-
-  <form method="POST">
-    <!-- your dropdowns, checkboxes etc -->
-    <button type="submit">Generate PDF</button>
-  </form>
 
   <script>
     const form = document.querySelector("form");
@@ -27,6 +93,6 @@
       document.getElementById("loading").style.display = "block";
     });
   </script>
-</body>
 
+</body>
 </html>
