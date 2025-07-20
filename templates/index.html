@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CAP College PDF Filter</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f2f2f2; padding: 40px; }
+        form { background: #fff; padding: 25px; border-radius: 8px; max-width: 600px; margin: auto; }
+        select, button { width: 100%; padding: 10px; margin-top: 10px; font-size: 15px; }
+        h2 { text-align: center; }
+        label { margin-top: 15px; display: block; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <h2>MHT-CET CAP Round PDF Filter</h2>
+        <label for="city">Select City</label>
+        <select name="city" required>
+            {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="branches">Select Engineering Branches</label>
+        <select name="branches" multiple size="10" required>
+            {% for branch in branches %}
+                <option value="{{ branch }}">{{ branch }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Generate Filtered PDF</button>
+    </form>
+</body>
+</html>
