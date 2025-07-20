@@ -7,6 +7,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 import os
 import uuid
+from io import BytesIO
+
 
 app = Flask(__name__)
 
@@ -36,11 +38,10 @@ def index():
     if request.method == "POST":
         city = request.form.get("city")
         selected_branches = request.form.getlist("branches")
-        output_file = f"{OUTPUT_DIR}/Filtered_{uuid.uuid4().hex}.pdf"
 
         try:
-            os.makedirs(OUTPUT_DIR, exist_ok=True)
-            doc = SimpleDocTemplate(output_file, pagesize=A4, rightMargin=20, leftMargin=20, topMargin=20, bottomMargin=20)
+            buffer = BytesIO()
+            doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=20, leftMargin=20, topMargin=20, bottomMargin=20)
             elements = []
             styles = getSampleStyleSheet()
             header_style = styles['Heading4']
@@ -79,10 +80,12 @@ def index():
                             elements.append(Spacer(1, 0.2 * inch))
 
             doc.build(elements)
-            return send_file(output_file, as_attachment=True)
+            buffer.seek(0)
+            return send_file(buffer, as_attachment=True, download_name="filtered_colleges.pdf", mimetype='application/pdf')
 
         except Exception as e:
             return f"Error: {str(e)}"
+
 
     return render_template("index.html", cities=cities, branches=branches)
 
