@@ -6,16 +6,13 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 import os
-import uuid
 from io import BytesIO
-
 
 app = Flask(__name__)
 
 PDF_PATH = "2023ENGG_CAP2_AI_CutOff.pdf"
-OUTPUT_DIR = "output"
 
-# Sample city and branch lists (same as GUI)
+# Cities and branches for dropdowns
 cities = sorted([
     "Pune", "Mumbai", "Nagpur", "Nashik", "Aurangabad", "Amravati",
     "Kolhapur", "Sangli", "Solapur", "Jalgaon", "Ahmednagar", "Latur",
@@ -81,15 +78,14 @@ def index():
 
             doc.build(elements)
             buffer.seek(0)
-            return send_file(buffer, as_attachment=True, download_name="filtered_colleges.pdf", mimetype='application/pdf')
+            return send_file(buffer, as_attachment=True, download_name="Filtered_Colleges.pdf", mimetype='application/pdf')
 
         except Exception as e:
             return f"Error: {str(e)}"
-
 
     return render_template("index.html", cities=cities, branches=branches)
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render will inject the PORT
-    app.run(host="0.0.0.0", port=port, debug=False) 
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
