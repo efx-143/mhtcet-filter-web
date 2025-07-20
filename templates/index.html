@@ -11,23 +11,22 @@
     </style>
 </head>
 <body>
-    <form method="POST">
-        <h2>MHT-CET CAP Round PDF Filter</h2>
-        <label for="city">Select City</label>
-        <select name="city" required>
-            {% for city in cities %}
-                <option value="{{ city }}">{{ city }}</option>
-            {% endfor %}
-        </select>
+  <div id="loading" style="display:none; text-align:center;">
+    <h3>⏳ Generating your filtered PDF...</h3>
+    <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." style="width: 80px;">
+  </div>
 
-        <label for="branches">Select Engineering Branches</label>
-        <select name="branches" multiple size="10" required>
-            {% for branch in branches %}
-                <option value="{{ branch }}">{{ branch }}</option>
-            {% endfor %}
-        </select>
+  <form method="POST">
+    <!-- your dropdowns, checkboxes etc -->
+    <button type="submit">Generate PDF</button>
+  </form>
 
-        <button type="submit">Generate Filtered PDF</button>
-    </form>
+  <script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", () => {
+      document.getElementById("loading").style.display = "block";
+    });
+  </script>
 </body>
+
 </html>
