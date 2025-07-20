@@ -1,77 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>College Filter Tool</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background: #f5f5f5;
     }
 
     h1 {
       text-align: center;
-      color: #333;
+      color: #007BFF;
     }
 
     form {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      background-color: #f4f4f4;
+      border-radius: 8px;
     }
 
-    label {
+    label, select {
       display: block;
-      margin-top: 10px;
-      font-weight: bold;
+      margin-bottom: 10px;
     }
 
-    select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 15px;
+    .checkboxes {
+      columns: 2;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: white;
     }
 
     button {
-      width: 100%;
-      padding: 10px;
-      background-color: #3498db;
-      border: none;
+      padding: 10px 20px;
+      background-color: #007BFF;
       color: white;
-      font-size: 16px;
-      border-radius: 4px;
+      border: none;
       cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2980b9;
-    }
-
-    #loading {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
+      border-radius: 5px;
     }
 
     table {
       width: 100%;
-      margin-top: 40px;
       border-collapse: collapse;
+      margin-top: 30px;
     }
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      font-size: 13px;
+    table, th, td {
+      border: 1px solid #999;
     }
 
     th {
-      background-color: #3498db;
+      background-color: #007BFF;
       color: white;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -80,54 +73,47 @@
 
   <form method="POST">
     <label for="city">Select City:</label>
-    <select name="city" required>
+    <select name="city" id="city" required>
+      <option value="" disabled selected>-- Choose City --</option>
       {% for city in cities %}
         <option value="{{ city }}">{{ city }}</option>
       {% endfor %}
     </select>
 
-    <label for="branches">Select Branches:</label>
-    <select name="branches" multiple size="8" required>
+    <label>Select Branches:</label>
+    <div class="checkboxes">
       {% for branch in branches %}
-        <option value="{{ branch }}">{{ branch }}</option>
+        <label>
+          <input type="checkbox" name="branches" value="{{ branch }}"> {{ branch }}
+        </label>
       {% endfor %}
-    </select>
+    </div>
 
-    <button type="submit">Generate Filtered Colleges</button>
-
-    <div id="loading">
-      <h3>⏳ Generating your filtered results...</h3>
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." width="60">
+    <div style="text-align:center;">
+      <button type="submit">Generate Filtered Results</button>
     </div>
   </form>
 
-  {% if data %}
-    <h2 style="margin-top: 40px;">Filtered Results</h2>
+  {% if results %}
+    <h2>Filtered Results</h2>
     <table>
       <thead>
         <tr>
-          {% for col in header %}
-            <th>{{ col }}</th>
+          {% for key in results[0].keys() %}
+            <th>{{ key }}</th>
           {% endfor %}
         </tr>
       </thead>
       <tbody>
-        {% for row in data %}
+        {% for row in results %}
           <tr>
-            {% for col in row %}
-              <td>{{ col }}</td>
+            {% for value in row.values() %}
+              <td>{{ value }}</td>
             {% endfor %}
           </tr>
         {% endfor %}
       </tbody>
     </table>
   {% endif %}
-
-  <script>
-    const form = document.querySelector("form");
-    form.addEventListener("submit", () => {
-      document.getElementById("loading").style.display = "block";
-    });
-  </script>
 </body>
 </html>
